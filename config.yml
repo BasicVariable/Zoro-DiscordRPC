@@ -1,0 +1,8 @@
+auth:
+  zoroToken: ""
+
+# Max time (in MS) a show can be paused before the RPC disappears
+maxIdleTime: 120_000
+
+# Need to do it for windows and linux :sob:
+# runOnStartUp: false
