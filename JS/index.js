@@ -28,7 +28,7 @@ const updatePresence = (newData, idle, time) => {
         }
 	};
 
-    if (!time) delete activeObj.activity.timestamps;
+    if (!time || idle) delete activeObj.activity.timestamps;
 
     client.request('SET_ACTIVITY', activeObj)
 };
