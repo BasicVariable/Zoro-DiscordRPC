@@ -59,7 +59,7 @@ fs.readFile("./config.yml", 'utf-8', async (err, res) => {
         await reactiveDelay(20_000, process.exit)
     };
 
-    let wasIdle, lastTimeStamp = "", lastIdleStart;
+    let lastTimeStamp = "", lastIdleStart;
     client.on('ready', async () => {
         while (true){
             let newData = await zoroScraper.getLatestWatching(config.auth.zoroToken);
@@ -67,18 +67,16 @@ fs.readFile("./config.yml", 'utf-8', async (err, res) => {
 
             let idle = newData.timeStamp === lastTimeStamp;
 
-            if (idle){
-                wasIdle = true;
-                if (lastIdleStart || Date.now() - Date.now() >= config.maxIdleTime){
-                    if (lastTimeStamp) client.clearActivity(process.pid);
+            if (lastIdleStart || Date.now() - Date.now() >= config.maxIdleTime){
+                if (lastTimeStamp) client.clearActivity(process.pid);
 
-                    lastTimeStamp = null;
-                    await reactiveDelay(15_000);
+                lastTimeStamp = null;
+                await reactiveDelay(15_000);
 
-                    continue
-                };
-                lastIdleStart = Date.now()
+                continue
             };
+            if (idle) lastIdleStart = Date.now();
+            
             lastTimeStamp = newData.timeStamp;
 
             updatePresence(
