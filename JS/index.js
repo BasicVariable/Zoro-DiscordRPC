@@ -67,7 +67,7 @@ fs.readFile("./config.yml", 'utf-8', async (err, res) => {
 
             let idle = newData.timeStamp === lastTimeStamp;
 
-            if (lastIdleStart || Date.now() - Date.now() >= config.maxIdleTime){
+            if (idle  && lastIdleStart || Date.now() - Date.now() >= config.maxIdleTime){
                 if (lastTimeStamp) client.clearActivity(process.pid);
 
                 lastTimeStamp = null;
@@ -75,8 +75,8 @@ fs.readFile("./config.yml", 'utf-8', async (err, res) => {
 
                 continue
             };
-            if (idle) lastIdleStart = Date.now();
-            
+            lastIdleStart = (idle)?Date.now():null;
+
             lastTimeStamp = newData.timeStamp;
 
             updatePresence(
