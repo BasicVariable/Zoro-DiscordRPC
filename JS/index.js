@@ -1,9 +1,9 @@
 const fs = require("node:fs");
 const yaml = require("js-yaml");
-const rpc = require("discord-rpc")
+const rpc = require("discord-rpc");
 
 // --- 
-const zoroScraper = require("./subFiles/zoroScraper.js")
+const zoroScraper = require("./subFiles/zoroScraper.js");
 // ---
 
 const client = new rpc.Client({ transport: 'ipc' });
@@ -41,7 +41,7 @@ const timeStamp2Time = (timeStamp) => {
 
 global.reactiveDelay = (ms, reaction) => new Promise(res => {
     setTimeout(async () => {
-        if (reaction) res(await reaction());
+        if (typeof reaction == "function") res(await reaction());
         res()
     }, ms)
 });
